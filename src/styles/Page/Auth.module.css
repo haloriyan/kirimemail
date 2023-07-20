@@ -1,0 +1,21 @@
+body {
+    background-color: #fff;
+}
+.Container {
+    position: absolute;
+    top: 0px;left: 0px;right: 0px;bottom: 0px;
+}
+.Form {
+    width: 35%;
+}
+.Cloud {
+    position: absolute;
+    bottom: 0px;left: 0px;right: 0px;
+    height: 100px;
+}
+
+@media (max-width: 480px) {
+    .Form {
+        width: 90%;
+    }
+}

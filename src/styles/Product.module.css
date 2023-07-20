@@ -1,0 +1,12 @@
+.CoverImage {
+    background-color: #ddd;
+    width: 100%;
+    aspect-ratio: 5/2;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+.ProductImages {
+    width: 60px;
+    aspect-ratio: 1/1;
+    border-radius: 7px;
+}

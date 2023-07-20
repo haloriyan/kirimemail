@@ -1,0 +1,26 @@
+.modal_container {
+    position: fixed;
+    top: 0px;left: 0px;right: 0px;bottom: 0px;
+    background: #00000040;
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    padding: 20px 0px;
+}
+.modal_body {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    margin: auto 0;
+    width: 50%;
+}
+
+@media (max-width: 480px) {
+    .modal_body {
+        width: 90%;
+    }
+}

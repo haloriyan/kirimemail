@@ -1,0 +1,41 @@
+.Section {
+    padding: 100px;
+    flex-direction: row;
+}
+.SectionReversed { 
+    padding: 100px;
+    flex-direction: row-reverse;
+}
+.SectionSpacer {
+    width: 15%;
+}
+.SectionInfo {
+    max-width: 40%;
+}
+.SectionImage {
+    border-bottom: 8px solid var(--primaryTransparent);
+    background-color: #fff;
+    border-radius: 12px;
+}
+.TopSectionInfo,.TopIllustration { width: 50%; }
+
+@media (max-width: 480px) {
+    .SectionReversed,.Section {
+        flex-direction: column !important;
+        padding: 40px;
+    }
+    .SectionImage,.SectionInfo {
+        width: 100% !important;
+        max-width: 100%;
+    }
+    .TopSection {
+        flex-direction: column-reverse !important;
+        padding: 100px 50px;
+        height: auto;
+    }
+    .TopSectionInfo,.TopIllustration {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .TopSectionTitle { font-size: 28px !important; }
+}

@@ -1,0 +1,14 @@
+.LeftMenu {
+    top: 70px;
+    box-sizing: border-box;
+}
+.MenuItem {
+    color: #444;
+    padding: 0px 25px;
+}
+.ItemActive {
+    background-color: var(--goldTransparent);
+}
+.HeadNavigation {
+    top: 70px;
+}

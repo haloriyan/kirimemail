@@ -1,0 +1,77 @@
+.Section {
+    padding: 40px;
+}
+.FeatureBoxWrapper {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.FeatureBox {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    flex-basis: 28%;
+    max-width: 33.333% - 20px;
+    flex-grow: 1;
+    border-bottom: 8px solid var(--primaryTransparent);
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    color: var(--text);
+}
+
+.TopSectionInfo,.TopIllustration { width: 50%; }
+.AboutLeft { width: 40%; }
+.AboutRight { width: 60%; }
+
+.ScrollContainer {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+}
+.ScrollItem {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.ScrollItem > * {
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .Section {
+        flex-direction: column !important;
+    }
+    .TopSection {
+        flex-direction: column-reverse !important;
+        padding: 40px;
+        height: auto;
+    }
+    .TopSectionInfo,.TopIllustration {
+        width: 100%;
+    }
+    .TopTitle,.AboutTitle {
+        font-size: 28px !important;
+    }
+    .TopDescription,.AboutDescription {
+        font-size: 16px !important;
+        line-height: 28px;
+    }
+    .AboutSection {
+        flex-direction: column !important;
+        margin-top: 20px !important;
+    }
+    .AboutLeft,.AboutRight {
+        width: 100% !important;
+    }
+    .StepWrapper {
+        flex-direction: column !important;
+    }
+    .StepItem {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 40px !important;
+    }
+}

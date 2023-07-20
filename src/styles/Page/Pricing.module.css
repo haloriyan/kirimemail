@@ -1,0 +1,22 @@
+.Switcher {
+    border: 1px solid var(--primary);
+    width: 50%;
+    margin-bottom: 40px;
+    border-radius: 8px;
+}
+.SwitchItem,
+.SwitchItemActive {
+    flex-grow: 1;
+    max-width: 50%;
+    height: 40px;
+    cursor: pointer;
+}
+.SwitchItemActive {
+    background-color: var(--primary);
+    color: #fff;
+}
+@media (max-width: 480px) {
+    .Switcher {
+        width: 100%;
+    }
+}

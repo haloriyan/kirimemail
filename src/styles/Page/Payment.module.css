@@ -1,0 +1,13 @@
+
+.CardNumberInput {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background: none;
+    font-size: 34px;
+    letter-spacing: 10px;
+    color: #fff;
+}
+.CardNumberInput::placeholder {
+    color: #ccc !important;
+}

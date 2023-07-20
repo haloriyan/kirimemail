@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import './styles/Content.css';
+import * as BaseStyle from "./styles/base/index"
+import Login from "./Login";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import config from "./config";
+import Middleware from "./Middleware";
+import Inbox from "./Inbox";
+import Read from "./Read";
+import Compose from "./Compose";
+import Tes from "./Tes";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+    return (
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<GoogleOAuthProvider clientId={config.google.clientID}><Login /></GoogleOAuthProvider>} />
+            <Route path="/login" element={<GoogleOAuthProvider clientId={config.google.clientID}><Login /></GoogleOAuthProvider>} />
+            <Route path="/inbox" element={<Middleware><Inbox /></Middleware>} />
+            <Route path="/compose" element={<Middleware><Compose /></Middleware>} />
+            <Route path="/read/:id" element={<Middleware><Read /></Middleware>} />
+            <Route path="/tes" element={<Tes />} />
+          </Routes>
+        </BrowserRouter>
+    )
 }
-
-export default App;

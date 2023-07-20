@@ -1,0 +1,42 @@
+body {
+    background-color: #fff;
+    color: #333;
+}
+.container {
+    position: absolute;
+    top: 100px;left: 10%;right: 10%;bottom: 100px;
+}
+.content {
+    position: absolute;
+    top: 100%;left: 0px;right: 0px;
+    background-color: #fff;
+}
+.merk {
+    filter: grayscale(100);
+    transition: 0.4s;
+    opacity: 0.6;
+}
+.merk:hover {
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+@media(max-width: 480px) {
+    .container {
+        bottom: 0px;top: 120px;
+        align-items: flex-end !important;
+    }
+    .aboveTheTop {
+        flex-basis: 100% !important;
+        width: 100% !important;
+    }
+    .aboveTheTop .buttons,.container {
+        flex-wrap: wrap;
+    }
+    .aboveTheTop .buttons button {
+        width: 100%;
+    }
+    .aboveTheTop .buttons .bg-none {
+        margin-top: 20px;
+    }
+}

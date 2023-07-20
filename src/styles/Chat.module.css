@@ -1,0 +1,19 @@
+.TypingArea {
+    width: 35%;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+@media (max-width: 480px) {
+    .TypingArea {
+        width: 100%;
+        padding-bottom: 20px;
+        border-radius: 0px;
+    }
+    .content {
+        padding: 20px;
+        margin: 0px;
+    }
+}

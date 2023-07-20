@@ -1,0 +1,6 @@
+@media (max-width: 480px) {
+    .SlideControl {
+        top: 40% !important;
+        height: 30px !important;
+    }
+}

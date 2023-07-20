@@ -1,0 +1,44 @@
+.JumboInfo,.BottomRight {
+    max-width: 30%;
+}
+.BoothHeader {
+    top: 100px;left: 0px;right: 0px;
+    padding: 0px 40px;
+}
+.BoothDetail { top: 100px; }
+.BoothDetailOverlay {
+    background-color: #00000070;
+    filter: blur(3px);
+}
+
+@media (max-width: 480px) {
+    .JumboInfo {
+        max-width: 100%;
+        padding: 20px;
+    }
+    .BottomContent {
+        padding: 20px;
+    }
+    .BottomRight {
+        max-width: 100%;
+        width: 100% !important;
+        padding: 20px !important;
+    }
+    .JumboContainer {
+        padding: 0px;
+        gap: 0px !important;
+        flex-direction: column !important;
+    }
+    .JumboCover {
+        border-radius: 0px;
+    }
+    .JumboAction {
+        position: fixed;
+        bottom: 0px;left: 0px;right: 0px;
+        background-color: #fff;
+        padding: 20px;
+    }
+    .BottomContent {
+        flex-direction: column !important;
+    }
+}

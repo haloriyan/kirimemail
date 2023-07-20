@@ -1,0 +1,38 @@
+.CoverImage {
+    background-color: #ddd;
+    width: 100%;
+    aspect-ratio: 5/2;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+.ProfileArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ProfileIcon {
+    width: 120px;
+    height: 120px;
+    aspect-ratio: 1/1;
+    background-color: #ddd;
+    border: 12px solid #f8f7f7;
+    border-radius: 999px;
+    margin-top: -65px;
+}
+.ProductBox {
+    border-bottom-width: 6px;
+    border-bottom-style: solid;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.ProductImage {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.ServiceImage {
+    width: 80px;
+    aspect-ratio: 1/1;
+    border-radius: 8px;
+}

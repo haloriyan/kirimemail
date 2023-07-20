@@ -1,0 +1,53 @@
+.Header {
+    position: fixed;
+    top: 0px;left: 0%;right: 0px;
+    height: 65px;
+    border-bottom: 1px solid #ddd;
+    /* box-shadow: 1px 1px 5px 1px #ddd; */
+    z-index: 3;
+}
+.ProfileArea {
+    position: fixed;
+    top: 65px;right: -50%;
+    width: 30%;
+    border-top: none;
+    border-right: none;
+    border-bottom-left-radius: 8px;
+    background-color: #fff;
+}
+.ProfileArea.active {
+    right: 0px;
+}
+
+.toggleMenu {
+    display: none;
+}
+
+#SearchInput {
+    margin: 0px;
+    height: 40px;
+    border: none;
+    background: none;
+    padding: 0px;
+    font-size: 14px;
+}
+.Header form button {
+    padding: 0px;
+    position: relative;
+    top: 2px;
+}
+
+@media (max-width: 480px) {
+    .toggleMenu {
+        display: block;
+    }
+    .ProfileArea {
+        width: 100% !important;
+        background-color: #fff;
+        z-index: 2;
+        right: -150%;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        border-bottom-right-radius: 8px;
+    }
+}
