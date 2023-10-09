@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import CryptoJS from "crypto-js";
 import Header from "./Partials/Header";
 import LeftMenu from "./Partials/LeftMenu";
 import HeadNavigation from "./Partials/HeadNavigation";
 import getFromPayloads from "./components/getFromPayload";
 import moment from "moment";
+import RC4 from "./components/RC4";
 
 const Read = () => {
     const {id} = useParams();
@@ -13,6 +15,8 @@ const Read = () => {
     const [isLoading, setLoading] = useState(true);
     const [token, setToken] = useState(null);
     const [message, setMessage] = useState(null);
+    const [key, setKey] = useState(null);
+    const [enctype, setEnctype] = useState(null);
 
     const [subject, setSubject] = useState('');
     const [from, setFrom] = useState('');
@@ -29,7 +33,18 @@ const Read = () => {
     }, []);
 
     useEffect(() => {
-        if (isLoading && token !== null) {
+        if (key === null) {
+            setKey(window.localStorage.getItem('encryption_key'));
+        }
+    }, [key]);
+    useEffect(() => {
+        if (enctype === null) {
+            setEnctype(window.localStorage.getItem('encryption_type'));
+        }
+    }, [enctype]);
+
+    useEffect(() => {
+        if (isLoading && token !== null && key !== null && enctype !== null) {
             setLoading(false);
 
             axios.get(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}`, {
@@ -41,17 +56,23 @@ const Read = () => {
             .then(response => {
                 let res = response.data;
                 let payloads = res.payload.headers;
-                console.log(res);
-                // console.log(res, getFromPayloads('from', res.payload.headers));
                 
                 setFrom(getFromPayloads('from', payloads));
                 setDate(getFromPayloads('date', payloads));
                 setSubject(getFromPayloads('subject', payloads));
-                setParts(res.payload.parts);
 
-                // let parsedParts = simpleParser(res).then(resp => {
-                //     console.log(resp);
-                // })
+                let rc4 = new RC4(key);
+                if (enctype === 'aes') {
+                    let aesDec = CryptoJS.AES.decrypt(atob(res.snippet), key).toString(CryptoJS.enc.Utf8);
+                    setParts(aesDec);
+                } else if (enctype === 'rc4') {
+                    let rc4Dec = rc4.decrypt(atob(res.snippet));
+                    setParts(rc4Dec);
+                } else {
+                    let rc4Dec = rc4.decrypt(atob(res.snippet));
+                    let aesDec = CryptoJS.AES.decrypt(rc4Dec, key).toString(CryptoJS.enc.Utf8);
+                    setParts(aesDec)
+                }
             })
         }
     }, [isLoading, token]);
@@ -60,12 +81,9 @@ const Read = () => {
         <>
             <Header />
             <HeadNavigation from={from.split("<")[0]} date={date} title={subject} />
-            <LeftMenu active={'inbox'} />
+            <LeftMenu active={'inbox'} enctype={enctype} setEnctype={setEnctype} />
             <div className="content" style={{top: 140}}>
-                {
-                    parts.length > 0 &&
-                    <div dangerouslySetInnerHTML={{ __html:  atob(parts[1].body.data.replace(/-/g, '+').replace(/_/g, '/'))}}></div>
-                }
+                {parts}
             </div>
         </>
     )

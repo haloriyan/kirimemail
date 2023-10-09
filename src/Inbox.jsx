@@ -18,13 +18,15 @@ const Inbox = () => {
 
     useEffect(() => {
         if (token === null) {
-            setToken(window.localStorage.getItem('google_access_token'));
+            let tok = window.localStorage.getItem('google_access_token');
+            setToken(tok);
         }
     }, [token]);
 
     useEffect(() => {
         if (token !== null && isLoading) {
             setLoading(false);
+            console.log(token);
             axios.get(`https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=${maxResults}`, {
                 headers: {
                     'Authorization': 'Bearer ' + token,

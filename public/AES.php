@@ -1,5 +1,12 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: *");
+header("Access-Control-Allow-Headers: *");
+$input = $_GET['input'];
+echo json_encode([
+	'status' => 200,
+	'input' => $input,
+]);
 	class AES {
 
 		var $sBox = array(
@@ -443,7 +450,7 @@
 	}
 
     $aes = new AES($_GET['key']);
-    $input = $_GET['input'];
+    
     $encrypted = $aes->encrypt($input);
     $decrypted = $aes->decrypt($encrypted);
     echo json_encode([

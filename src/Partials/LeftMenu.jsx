@@ -3,7 +3,7 @@ import styles from "./styles/LeftMenu.module.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const LeftMenu = ({active}) => {
+const LeftMenu = ({active, enctype = 'RC4', setEnctype = null}) => {
     const navigate = useNavigate();
     const [key, setKey] = useState('');
     const [isLoading, setLoading] = useState(true);
@@ -12,7 +12,6 @@ const LeftMenu = ({active}) => {
         if (isLoading) {
             setLoading(false);
             let k = window.localStorage.getItem('encryption_key');
-            console.log(k);
             setKey(window.localStorage.getItem('encryption_key'));
         }
     }, [isLoading]);
@@ -35,8 +34,25 @@ const LeftMenu = ({active}) => {
                 </a>
 
                 <div className="p-2">
+                    {
+                        setEnctype !== null &&
+                        <div className="group">
+                            <select name="enctype" id="enctype" onChange={e => {
+                                let val = e.currentTarget.value;
+                                console.log(val);
+                                setEnctype(val);
+                                window.localStorage.setItem('encryption_type', val);
+                                window.location.reload()
+                            }}>
+                                <option selected={enctype === 'aes'} value="aes">AES</option>
+                                <option selected={enctype === 'rc4'} value="rc4">RC4</option>
+                                <option selected={enctype === 'aesrc4'} value="aesrc4">AES + RC4</option>
+                            </select>
+                            <label htmlFor="key" className="active">Tipe Enkripsi :</label>
+                        </div>
+                    }
                     <div className="group">
-                        <input type="text" id="key" value={key} />
+                        <input type="text" id="key" value={key} onInput={e => setKey(e.currentTarget.value)} onChange={e => setKey(e.currentTarget.value)} />
                         <label htmlFor="key">Kunci Enkripsi :</label>
                     </div>
                 </div>

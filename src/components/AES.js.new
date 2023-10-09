@@ -1,6 +1,5 @@
 class AES {
     constructor(z) {
-        
         this.sBox = [
             [0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76],
             [0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C, 0xA4, 0x72, 0xC0],
@@ -124,315 +123,49 @@ class AES {
 
         this.keyExpansion(z);
     }
+    keyExpansion(key) {
+        // 
+    }
     encrypt(input) {
-        let data = input.split('');
-
-        let globalState = [];
-        let count 	= 0;
+        var data = input.split('');
+        var state = [];
+        var count = 0;
         this.pos_w = 0;
-
-        for(let i=0; i<4; i++){
-            if (globalState.length === 0) {
-                globalState[i] = [];
-            }
-            for(let j=0; j<4; j++) {
-                if (globalState[i] === undefined) {
-                    console.log(globalState[i]);
-                }
-                if (count < data.length){
-                    globalState[i][j] = data[count];
-                } else{
-                    globalState[i][j] = 0;
+        for (var i = 0; i < 4; i++) {
+            state[i] = [];
+            for (var j = 0; j < 4; j++) {
+                if (count < data.length) {
+                    state[i][j] = data[count].charCodeAt(0);
+                } else {
+                    state[i][j] = 0;
                 }
                 count++;
             }
         }
-
-        for(let i=0; i<4; i++){
-            for(let j=0; j < this.Nb; j++) {
-                globalState[i][j] = globalState[i][j] ^ this.w[i][this.pos_w + j];
+        for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < this.Nb; j++) {
+                state[i][j] = state[i][j] ^ this.w[i][this.pos_w + j];
             }
         }
         this.pos_w = this.pos_w + this.Nb;
-
-        for (let i=0; i<this.Nr-1; i++) {
-            globalState = this.SubByte(globalState);
-            globalState = this.ShiftRow(globalState);
-            globalState = this.MixColumns(globalState);
-            globalState = this.AddRoundKey(globalState);
+        for (var i = 0; i < this.Nr - 1; i++) {
+            state = this.SubByte(state);
+            state = this.ShiftRow(state);
+            state = this.MixColumns(state);
+            state = this.AddRoundKey(state);
             this.pos_w = this.pos_w + this.Nb;
         }
-
-        globalState = this.SubByte(globalState);
-        globalState = this.ShiftRow(globalState);
-        globalState = this.AddRoundKey(globalState);
-
-        let cipher = "";
-        globalState.forEach(state => {
-            state.forEach(data => {
+        state = this.SubByte(state);
+        state = this.ShiftRow(state);
+        state = this.AddRoundKey(state);
+        var cipher = "";
+        state.forEach(function(row) {
+            row.forEach(function(data) {
                 cipher += String.fromCharCode(data);
             });
         });
         return cipher;
     }
-    decrypt(input) {
-        let data = input.split('');
-
-        let globalState = [];
-        let count 	= 0;
-        this.pos_w = ((this.Nr+1)*4);
-        let modulo = 0;
-
-        for(let i=0; i<4; i++){
-            if (globalState.length === 0) {
-                globalState[i] = [];
-            }
-            for(let j=0; j<4; j++) {
-                globalState[i][j] = data[count];
-                count++;
-            }
-        }
-
-        // AddRoundKey #1
-        this.pos_w = (this.pos_w)-4;
-        for(let i=0; i<4; i++){
-            let x = 0;
-            for(let j= this.pos_w; j < ((this.Nr+1)*4); j++) {
-
-                let y = x++;
-
-                globalState[i][y] = globalState[i][y] ^ this.w[i][j];
-
-            }
-        }
-
-        for (let i=0; i<this.Nr-1; i++) {
-
-            globalState = this.InvShiftRow(globalState);
-
-            globalState = this.InvSubByte(globalState);
-
-            this.pos_w = (this.pos_w)- this.Nb;
-            globalState = this.AddRoundKey(globalState);
-
-            globalState = this.InvMixColumns(globalState);
-
-        }
-
-        globalState = this.InvShiftRow(globalState);
-
-        globalState = this.InvSubByte(globalState);
-
-        this.pos_w = (this.pos_w)- this.Nb;
-        globalState = this.AddRoundKey(globalState);
-
-        let plain = "";
-        globalState.forEach(state => {
-            state.forEach(data => {
-                plain += String.fromCharCode(data);
-            });
-        });
-
-        return plain;
-
-    }
-    AddRoundKey(data) {
-        let state = [];
-        for(let i=0; i<4; i++){
-            state[i] = [];
-            this.temp_w = this.pos_w;
-            for(let j=0; j < this.Nb; j++) {
-                state[i][j] = data[i][j] ^ this.w[i][this.pos_w+j];
-            }
-        }
-
-        return state;
-    }
-
-    SubByte(data){
-
-        let state = data;
-
-        for(let i=0; i<this.Nb; i++){
-            for(let j=0; j<4; j++) {
-                state[i][j] = this.subword(state[i][j]);
-            }
-        }
-
-        return state;
-    }
-
-    ShiftRow(data){
-
-        let state = [];
-
-        for(let i=0; i<4; i++){
-            state[i] = [];
-            for(let j=0; j<this.Nb; j++) {
-
-                state[i][j] = data[i][(j+i)%4];
-
-            }
-        }
-
-        return state;
-
-    }
-    MixColumns(data) {
-        let state = [[], [], [], []];
-
-        for (let i = 0; i < this.Nb; i++) {
-            state[0][i] = this.mult(0x02, data[0][i]) ^ this.mult(0x03, data[1][i]) ^ this.mult(0x01, data[2][i]) ^ this.mult(0x01, data[3][i]);
-            state[1][i] = this.mult(0x01, data[0][i]) ^ this.mult(0x02, data[1][i]) ^ this.mult(0x03, data[2][i]) ^ this.mult(0x01, data[3][i]);
-            state[2][i] = this.mult(0x01, data[0][i]) ^ this.mult(0x01, data[1][i]) ^ this.mult(0x02, data[2][i]) ^ this.mult(0x03, data[3][i]);
-            state[3][i] = this.mult(0x03, data[0][i]) ^ this.mult(0x01, data[1][i]) ^ this.mult(0x01, data[2][i]) ^ this.mult(0x02, data[3][i]);
-        }
-
-        return state;
-    }
-
-    InvSubByte(data) {
-
-        let state = data;
-
-        for (let i = 0; i < this.Nb; i++) {
-            for (let j = 0; j < 4; j++) {
-                state[i][j] = this.invSub(state[i][j]);
-            }
-        }
-
-        return state;
-
-    }
-
-    InvShiftRow(data) {
-
-        let state = [];
-
-        for (let i = 0; i < 4; i++) {
-            state[i] = [];
-            for (let j = 0; j < this.Nb; j++) {
-
-                state[i][(j + i) % 4] = data[i][j];
-
-            }
-        }
-
-        return state;
-
-    }
-
-    InvMixColumns(data) {
-        let state = [[],[],[],[]];
-    
-        for (let i = 0; i < this.Nb; i++) {
-          state[0][i] = this.mult(0x0e, data[0][i]) ^ this.mult(0x0b, data[1][i]) ^ this.mult(0x0d, data[2][i]) ^ this.mult(0x09, data[3][i]);
-          state[1][i] = this.mult(0x09, data[0][i]) ^ this.mult(0x0e, data[1][i]) ^ this.mult(0x0b, data[2][i]) ^ this.mult(0x0d, data[3][i]);
-          state[2][i] = this.mult(0x0d, data[0][i]) ^ this.mult(0x09, data[1][i]) ^ this.mult(0x0e, data[2][i]) ^ this.mult(0x0b, data[3][i]);
-          state[3][i] = this.mult(0x0b, data[0][i]) ^ this.mult(0x0d, data[1][i]) ^ this.mult(0x09, data[2][i]) ^ this.mult(0x0e, data[3][i]);
-        }
-    
-        return state;
-    }
-    
-    mult(a, b) {
-        let sum = this.ltable[a] + this.ltable[b];
-        sum %= 255;
-        sum = this.atable[sum];
-        return (a == 0 ? 0 : (b == 0 ? 0 : sum));
-    }
-    keyExpansion(key) {
-        let arrkey = key.split('');
-        let count 	= 0;
-
-        // konstanta Rcon
-        let rcon = [
-            [0x01,0x00,0x00,0x00],
-            [0x02,0x00,0x00,0x00],
-            [0x04,0x00,0x00,0x00],
-            [0x08,0x00,0x00,0x00],
-            [0x10,0x00,0x00,0x00],
-            [0x20,0x00,0x00,0x00],
-            [0x40,0x00,0x00,0x00],
-            [0x80,0x00,0x00,0x00],
-            [0x1b,0x00,0x00,0x00],
-            [0x36,0x00,0x00,0x00]
-        ];
-
-        for(let i=0; i<this.Nb; i++){
-            this.w[i] = [];
-            for(let j=0; j<4; j++) {
-                this.w[i][j] = 
-                    arrkey[count];
-                count++;
-            }
-        }
-
-        let count_rcon = 0;
-        for( let i=4; i<44; i++){
-            for(let j=0; j<4; j++) {
-                let wmin1	= this.w[j][i-1];
-                let wmin4	= this.w[j][i-4];
-
-                if (i%4==0) {
-                    if(j!=3)
-                        wmin1	= this.w[j+1][i-1];
-                    else
-                        wmin1	= this.w[0][i-1];
-
-                    this.w[j][i] = this.subword(wmin1) ^ wmin4 ^ rcon[count_rcon][j];
-
-                    if (j==3) count_rcon++;
-
-                } else {
-                    this.w[j][i] = wmin1 ^ wmin4;
-                }
-            }
-        }
-        return this.w;
-    }
-    rotword(w, row, col) {
-        return (row == 0 ? w[3][col] : w[row - 1][col]);
-    }
-    
-    subword(byte) {
-        let r = 0;
-        let c = 0;
-        if (this.dechex(byte).length == 2) {
-            let hex = this.dechex(byte).split('');
-    
-            r = this.hexdec(hex[0]);
-            c = this.hexdec(hex[1]);
-        } else {
-            r = 0;
-            c = byte;
-        }
-    
-        return this.sBox[r][c];
-    }
-    
-    invSub(byte) {
-        let r = 0;
-        let c = 0;
-        if (this.dechex(byte).length == 2) {
-            let hex = this.dechex(byte).split('');
-            r = this.hexdec(hex[0]);
-            c = this.hexdec(hex[1]);
-        } else {
-            r = 0;
-            c = byte;
-        }
-    
-        return this.invSBox[r][c];
-    }
-
-    dechex(num) {
-        return num.toString(16);
-    }
-    hexdec(str) {
-        return parseInt(str, 16);
-    }
 }
 
-// export default AES;
-module.exports = AES
+export default AES;

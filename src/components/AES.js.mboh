@@ -247,10 +247,7 @@ class AES {
 
         for(let i=0; i<this.Nb; i++){
             for(let j=0; j<4; j++) {
-                // if (this.w.length === 0) {
-                //     this.w[i] = [];
-                // }
-                // this.w[i][j] = this.ord(arrKey[count]);
+                this.w[i][j] = this.ord(arrKey[count]);
                 count++;
             }
         }

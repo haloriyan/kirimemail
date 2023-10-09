@@ -20,6 +20,7 @@ const Login = () => {
 
     const loggingIn = useGoogleLogin({
         flow: "implicit",
+        scope: ["https://mail.google.com/"],
         onSuccess: response => {
             axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
                 headers: {
@@ -42,14 +43,20 @@ const Login = () => {
         <>
             <div className="fixed top-0 left-0 right-0 bottom-0 flex column item-center justify-center">
                 <form className="w-40" onSubmit={e => {
-                    loggingIn();
+                    if (key !== "") {
+                        loggingIn();
+                    }
                     e.preventDefault();
                 }}>
                     <div className="group">
                         <input type="text" id="key" onInput={e => setKey(e.currentTarget.value)} />
                         <label htmlFor="key">Kunci Enkripsi :</label>
                     </div>
-                    <button className="gold w-100 mt-2" onClick={loggingIn}>Login</button>
+                    <button className="gold w-100 mt-2" onClick={() => {
+                        if (key !== "") {
+                            loggingIn();
+                        }
+                    }}>Login</button>
                 </form>
             </div>
         </>

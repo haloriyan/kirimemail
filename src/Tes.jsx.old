@@ -1,0 +1,53 @@
+import React, { useEffect, useState } from "react";
+import CryptoJS from "crypto-js";
+import RC4 from "./components/RC4";
+import axios from "axios";
+import AES from "./components/AES";
+
+const Tes = () => {
+    const [plain, setPlain] = useState('halo');
+    const [encrypted, setEncrypted] = useState('');
+    const [dencrypted, setDencrypted] = useState('');
+    const [isLoading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (isLoading) {
+            setLoading(false);
+            let key = "Inikatasandi2908";
+            let loop = null;
+            let encrypted = "";
+            let input = btoa("hello world");
+
+            axios.get(`https://takotoko.com/AES.php?input=${input}&key=${key}&action=encrypt`)
+            .then(response => {
+                let res = response.data;
+                console.log(atob(res.result));
+                let theResult = atob(res.result);
+                // console.log('encrypted : ', atob(res.result));
+
+                axios.get(`https://takotoko.com/AES.php?input=${theResult}&key=${key}&action=decrypt`)
+                .then(data => {
+                    let dat = data.data;
+                    console.log(dat);
+                })
+            })
+
+            
+            // let rc4 = new RC4(key);
+
+            // setEncrypted(enc);
+            // setDencrypted(dec);
+            // let enc =
+        }
+    })
+
+    return (
+        <>
+            <div>Plain : {plain}</div>
+            <div>Enc : {encrypted}</div>
+            <div>Dec : {dencrypted}</div>
+        </>
+    )
+}
+
+export default Tes;
