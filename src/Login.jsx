@@ -33,6 +33,7 @@ const Login = () => {
                 window.localStorage.setItem('name', res.name);
                 window.localStorage.setItem('email', res.email);
                 window.localStorage.setItem('encryption_key', key);
+                window.localStorage.setItem('encryption_type', 'AES');
                 
                 navigate('/inbox');
             })

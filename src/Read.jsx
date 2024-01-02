@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CryptoJS from "crypto-js";
 import Header from "./Partials/Header";
 import LeftMenu from "./Partials/LeftMenu";
 import HeadNavigation from "./Partials/HeadNavigation";
 import getFromPayloads from "./components/getFromPayload";
 import moment from "moment";
 import RC4 from "./components/RC4";
+import AES from "./logging";
 
 const Read = () => {
     const {id} = useParams();
@@ -62,16 +62,17 @@ const Read = () => {
                 setSubject(getFromPayloads('subject', payloads));
 
                 let rc4 = new RC4(key);
+                let aes = new AES(key);
                 if (enctype === 'aes') {
-                    let aesDec = CryptoJS.AES.decrypt(atob(res.snippet), key).toString(CryptoJS.enc.Utf8);
+                    let aesDec = aes.decrypt(res.snippet);
                     setParts(aesDec);
                 } else if (enctype === 'rc4') {
                     let rc4Dec = rc4.decrypt(atob(res.snippet));
                     setParts(rc4Dec);
                 } else {
                     let rc4Dec = rc4.decrypt(atob(res.snippet));
-                    let aesDec = CryptoJS.AES.decrypt(rc4Dec, key).toString(CryptoJS.enc.Utf8);
-                    setParts(aesDec)
+                    let aesDec = aes.decrypt(rc4Dec);
+                    setParts(aesDec);
                 }
             })
         }

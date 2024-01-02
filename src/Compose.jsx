@@ -2,25 +2,28 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "./Partials/Header";
 import LeftMenu from "./Partials/LeftMenu";
 import HeadNavigation from "./Partials/HeadNavigation";
-import InputFile from "./components/InputFile";
 import axios from "axios";
 import moment from "moment";
-import CryptoJS from "crypto-js";
 import config from "./config";
 import RC4 from "./components/RC4";
+import AES from "./logging";
 
 const Compose = () => {
     const [token, setToken] = useState(null);
     const [key, setKey] = useState(null);
-    const [subject, setSubject] = useState('Halo riyan');
-    const [body, setBody] = useState('hai riyan');
+    const [subject, setSubject] = useState('');
+    const [body, setBody] = useState('');
     const [to, setTo] = useState('');
-    const [toName, setToName] = useState('Riyan Satria');
-    const [toEmail, setToEmail] = useState('riyan.satria.619@gmail.com');
+    const [toName, setToName] = useState('');
+    const [toEmail, setToEmail] = useState('');
     const [reader, setReader] = useState(null);
     const [readyToSend, setReadyToSend] = useState(false);
     const [message, setMessage] = useState('');
     const [enctype, setEnctype] = useState(null);
+    const [sendButton, setSendButton] = useState('Kirim');
+    const [elapsedTime, setElapsedTime] = useState(0);
+
+    const [startTime, setStartTime] = useState(null);
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -60,30 +63,25 @@ const Compose = () => {
 
     const send = () => {
         let key = window.localStorage.getItem('encryption_key');
+        let aes = new AES(key);
+        let rc4 = new RC4(key);
+        setStartTime(new Date().getTime());
+        setSendButton('Mengirim...');
 
         if (enctype === 'aes') {
-            let enc = CryptoJS.AES.encrypt(body, key);
-            setBody(btoa(enc.toString()));
+            let enc = aes.encrypt(body);
+            setBody(enc);
         } else if (enctype === 'rc4') {
             let theBody = body;
-            let rc4 = new RC4(key);
             let rc4Encrypted = rc4.encrypt(theBody);
             setBody(btoa(rc4Encrypted));
         } else {
             let plain = body;
-            let rc4 = new RC4(key);
-            let aesEnc = CryptoJS.AES.encrypt(body, key);
-            let rc4Enc = btoa(rc4.encrypt(aesEnc.toString()));
+            
+            let aesEnc = aes.encrypt(body);
+            let rc4Enc = btoa(rc4.encrypt(aesEnc));
 
-            // setBody(CryptoJS.enc.Utf8.stringify(rc4Enc));
             setBody(rc4Enc);
-            console.log(rc4Enc);
-
-            // let rc4Dec = rc4.decrypt(rc4Enc);
-            // let aesDec = CryptoJS.AES.decrypt(aesEnc.toString(), key).toString(CryptoJS.enc.Utf8);
-            // console.log('Plain : ', plain);
-            // console.log('Enc : ', rc4Enc);
-            // console.log('Dec : ', aesDec);
         }
         setReadyToSend(true);
     }
@@ -112,10 +110,20 @@ const Compose = () => {
             })
             .then(response => {
                 let res = response.data;
-                console.log(res);
+                let endTime = new Date().getTime();
+                const elpTime = endTime - startTime;
+                setElapsedTime(elpTime);
+                setSendButton('Kirim');
             });
         }
     }, [readyToSend]);
+
+    useEffect(() => {
+        let to = setTimeout(() => {
+            setElapsedTime(0);
+        }, 5000);
+        return () => clearTimeout(to);
+    });
 
     return (
         <>
@@ -132,7 +140,7 @@ const Compose = () => {
                     </div>
                 }
                 right={
-                    <button className="gold" onClick={send}>Kirim</button>
+                    <button className="gold" onClick={send}>{sendButton}</button>
                 } 
             />
             {
@@ -145,6 +153,12 @@ const Compose = () => {
                 <input type="text" className="no-style text bold size-32 flex grow-1" placeholder="Subject" onInput={e => setSubject(e.currentTarget.value)} value={subject} />
                 <div className="h-20"></div>
                 <textarea placeholder="Isi pesan" className="no-style" onInput={e => setBody(e.currentTarget.value)}></textarea>
+                
+                <div className="h-40"></div>
+                {
+                    elapsedTime > 0 &&
+                    <div className="bg-green transparent rounded p-1 pl-2 pr-2">Pesan terkirim ke {toEmail} dalam waktu {elapsedTime / 1000} detik ({elapsedTime} milidetik)</div>
+                }
                 
                 {/* <div className="h-40"></div>
                 <div className="border rounded bg-grey flex row centerize gap-20 p-4 h-300 relative" id="previewArea">
