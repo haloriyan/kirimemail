@@ -8,6 +8,11 @@ const LeftMenu = ({active, enctype = 'RC4', setEnctype = null}) => {
     const [key, setKey] = useState('');
     const [isLoading, setLoading] = useState(true);
 
+    const changeKey = newKey => {
+        setKey(newKey);
+        window.localStorage.setItem('encryption_key', newKey);
+    }
+
     useEffect(() => {
         if (isLoading) {
             setLoading(false);
@@ -39,7 +44,6 @@ const LeftMenu = ({active, enctype = 'RC4', setEnctype = null}) => {
                         <div className="group">
                             <select name="enctype" id="enctype" onChange={e => {
                                 let val = e.currentTarget.value;
-                                console.log(val);
                                 setEnctype(val);
                                 window.localStorage.setItem('encryption_type', val);
                                 window.location.reload()
@@ -52,7 +56,7 @@ const LeftMenu = ({active, enctype = 'RC4', setEnctype = null}) => {
                         </div>
                     }
                     <div className="group">
-                        <input type="text" id="key" value={key} onInput={e => setKey(e.currentTarget.value)} onChange={e => setKey(e.currentTarget.value)} />
+                        <input type="text" id="key" value={key} onInput={e => changeKey(e.currentTarget.value)} onChange={e => changeKey(e.currentTarget.value)} />
                         <label htmlFor="key">Kunci Enkripsi :</label>
                     </div>
                 </div>

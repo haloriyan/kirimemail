@@ -15,6 +15,14 @@ const Inbox = () => {
     const [isLoadingDetail, setLoadingDetail] = useState(null);
     const [messages, setMessages] = useState([]);
     const [maxResults, setMaxResults] = useState(10);
+    const [enctype, setEnctype] = useState(null);
+
+    useEffect(() => {
+        if (enctype === null) {
+            let enct = window.localStorage.getItem('encryption_type');
+            setEnctype(enct)
+        }
+    }, [enctype]);
 
     useEffect(() => {
         if (token === null) {
@@ -118,7 +126,7 @@ const Inbox = () => {
                 
             </div>
             <Header />
-            <LeftMenu active={'inbox'} />
+            <LeftMenu active={'inbox'} setEnctype={setEnctype} enctype={enctype} />
         </>
     )
 }

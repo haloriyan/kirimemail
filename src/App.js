@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './styles/Content.css';
-import * as BaseStyle from "./styles/base/index"
+import * as BaseStyle from "./styles/base/index";
 import Login from "./Login";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import config from "./config";
@@ -8,8 +8,6 @@ import Middleware from "./Middleware";
 import Inbox from "./Inbox";
 import Read from "./Read";
 import Compose from "./Compose";
-import Tes from "./Tes";
-import RC4Test from "./RC4";
 import { useEffect, useState } from "react";
 
 export default function App() {
@@ -32,8 +30,6 @@ export default function App() {
             <Route path="/inbox" element={<Middleware><Inbox /></Middleware>} />
             <Route path="/compose" element={<Middleware><Compose /></Middleware>} />
             <Route path="/read/:id" element={<Middleware><Read /></Middleware>} />
-            <Route path="/tes" element={<Tes />} />
-            <Route path="/rc4" element={<RC4Test />} />
           </Routes>
         </BrowserRouter>
     )

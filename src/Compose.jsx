@@ -159,17 +159,6 @@ const Compose = () => {
                     elapsedTime > 0 &&
                     <div className="bg-green transparent rounded p-1 pl-2 pr-2">Pesan terkirim ke {toEmail} dalam waktu {elapsedTime / 1000} detik ({elapsedTime} milidetik)</div>
                 }
-                
-                {/* <div className="h-40"></div>
-                <div className="border rounded bg-grey flex row centerize gap-20 p-4 h-300 relative" id="previewArea">
-                    Drop berkas di sini atau
-                    <div className="bg-gold p-1 pl-2 pr-2 rounded">
-                        Pilih Berkas
-                    </div>
-                    <input type="file" ref={inputRef} onChange={e => {
-                        InputFile(e, "#previewArea");
-                    }} />
-                </div> */}
             </div>
         </>
     )
