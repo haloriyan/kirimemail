@@ -11,9 +11,9 @@ import AES from "./components/AES";
 const Compose = () => {
     const [token, setToken] = useState(null);
     const [key, setKey] = useState(null);
-    const [subject, setSubject] = useState('Tesenc');
+    const [subject, setSubject] = useState('');
     const [body, setBody] = useState('');
-    const [to, setTo] = useState('takotoko.com@gmail.com');
+    const [to, setTo] = useState('');
     const [toName, setToName] = useState('Sender');
     const [toEmail, setToEmail] = useState('');
     const [reader, setReader] = useState(null);
