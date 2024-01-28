@@ -62,17 +62,26 @@ const Read = () => {
                 setSubject(getFromPayloads('subject', payloads));
 
                 let rc4 = new RC4(key);
-                let aes = new AES(key);
-                if (enctype === 'aes') {
-                    let aesDec = aes.decrypt(res.snippet);
-                    setParts(aesDec);
-                } else if (enctype === 'rc4') {
+                if (enctype.toLowerCase() === 'aes') {
+                    console.log(res.snippet);
+                    axios.get(`http://127.0.0.1:1234/AES.php?text=${res.snippet}&key=${key}&action=decrypt`)
+                    .then(response => {
+                        let res = response.data;
+                        console.log(res);
+                        setParts(res);
+                    })
+                } else if (enctype.toLowerCase() === 'rc4') {
+                    console.log(res.snippet, atob(res.snippet));
                     let rc4Dec = rc4.decrypt(atob(res.snippet));
                     setParts(rc4Dec);
                 } else {
                     let rc4Dec = rc4.decrypt(atob(res.snippet));
-                    let aesDec = aes.decrypt(rc4Dec);
-                    setParts(aesDec);
+                    axios.get(`http://127.0.0.1:1234/AES.php?text=${rc4Dec}&key=${key}&action=decrypt`)
+                    .then(response => {
+                        let res = response.data;
+                        console.log(res);
+                        setParts(res);
+                    });
                 }
             })
         }

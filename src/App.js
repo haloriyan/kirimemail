@@ -9,6 +9,7 @@ import Inbox from "./Inbox";
 import Read from "./Read";
 import Compose from "./Compose";
 import { useEffect, useState } from "react";
+import Tes from "./Tes";
 
 export default function App() {
   const [clientID, setClientID] = useState(null);
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/inbox" element={<Middleware><Inbox /></Middleware>} />
             <Route path="/compose" element={<Middleware><Compose /></Middleware>} />
             <Route path="/read/:id" element={<Middleware><Read /></Middleware>} />
+            <Route path="/tes" element={<Tes />} />
           </Routes>
         </BrowserRouter>
     )
