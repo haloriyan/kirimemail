@@ -75,6 +75,7 @@ const Compose = () => {
                 setBody(res);
                 setReadyToSend(true);
             })
+            .catch(e => setSendButton('Kirim'));
             
         } else if (enctype.toLowerCase() === 'rc4') {
             let theBody = body;
@@ -84,7 +85,6 @@ const Compose = () => {
         } else {
             let plain = body;
             
-            // let aesEnc = AES(body, key);
             axios.get(`http://127.0.0.1:1234/AES.php?text=${body}&key=${key}&action=encrypt`)
             .then(response => {
                 let res = response.data;
@@ -92,6 +92,7 @@ const Compose = () => {
                 setBody(rc4Enc);
                 setReadyToSend(true);
             })
+            .catch(e => setSendButton('Kirim'));
         }
         // setReadyToSend(true);
     }
